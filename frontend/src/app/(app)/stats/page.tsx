@@ -56,11 +56,11 @@ export default function StatsPage() {
     staleTime: 60_000,
   });
 
-  const target = profile?.[metricTargetKey[metric]] ?? 0;
+  const target = (profile?.[metricTargetKey[metric]] as number | undefined) ?? 0;
   const vKey = metricValueKey[metric];
 
   const { avg, onTarget, overTarget } = useMemo(() => {
-    const withData = entries.filter((e) => e[vKey] > 0);
+    const withData = entries.filter((e) => (e[vKey] as number) > 0);
     if (!withData.length) return { avg: 0, onTarget: 0, overTarget: 0 };
     const sum = withData.reduce((a, e) => a + (e[vKey] as number), 0);
     return {
