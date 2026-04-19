@@ -249,6 +249,18 @@ export default function SettingsPage() {
           </Card>
         </section>
 
+        {/* ─── Admin Space (admin users only) ──────────────────────────── */}
+        {profile?.isAdmin && (
+          <section>
+            <h2 className="mb-3 text-xs font-semibold uppercase tracking-wider text-[var(--color-text-muted)]">Admin</h2>
+            <Card>
+              <Button variant="secondary" size="md" className="w-full" onClick={() => router.push('/admin')}>
+                Admin Space
+              </Button>
+            </Card>
+          </section>
+        )}
+
         {/* ─── Account ──────────────────────────────────────────────────── */}
         <section>
           <h2 className="mb-3 text-xs font-semibold uppercase tracking-wider text-[var(--color-text-muted)]">Account</h2>
@@ -261,18 +273,6 @@ export default function SettingsPage() {
             </Button>
           </Card>
         </section>
-
-        {/* ─── Admin Space (desktop only, admin users only) ──────────────── */}
-        {profile?.isAdmin && (
-          <section className="hidden md:block">
-            <h2 className="mb-3 text-xs font-semibold uppercase tracking-wider text-[var(--color-text-muted)]">Admin</h2>
-            <Card>
-              <Button variant="secondary" size="md" className="w-full" onClick={() => router.push('/admin')}>
-                Admin Space
-              </Button>
-            </Card>
-          </section>
-        )}
       </div>
 
       {/* ─── Edit Profile dialog ───────────────────────────────────────── */}

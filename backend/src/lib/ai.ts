@@ -3,10 +3,10 @@ import { AiSettings, UserProfile, DailyTargets, AiNutritionResponse } from '../t
 const NUTRITION_PROMPT = `You are a nutritionist AI. Given a list of foods and drinks, calculate the nutritional content.
 Return ONLY valid JSON (no markdown, no explanation) with this exact shape:
 {
-  "items": [{ "name": string, "calories": number, "protein": number, "fiber": number, "carbs": number }],
-  "totals": { "calories": number, "protein": number, "fiber": number, "carbs": number }
+  "items": [{ "name": string, "calories": number, "protein": number, "fiber": number, "carbs": number, "healthyFats": number, "unhealthyFats": number }],
+  "totals": { "calories": number, "protein": number, "fiber": number, "carbs": number, "healthyFats": number, "unhealthyFats": number }
 }
-Calories in kcal, macros in grams. Be realistic based on typical portions described.`;
+Calories in kcal, all macros in grams. healthyFats = unsaturated fats (monounsaturated + polyunsaturated). unhealthyFats = saturated fats + trans fats. Be realistic based on typical portions described.`;
 
 const TARGETS_PROMPT = `You are a nutritionist AI. Calculate daily nutritional targets to maintain current weight.
 Return ONLY valid JSON (no markdown, no explanation) with this exact shape:
@@ -15,10 +15,12 @@ Return ONLY valid JSON (no markdown, no explanation) with this exact shape:
   "targetProtein": number,
   "targetFiber": number,
   "targetCarbs": number,
+  "targetHealthyFats": number,
+  "targetUnhealthyFats": number,
   "passiveCalories": number,
   "activeCalories": number
 }
-Calories in kcal, macros in grams. Use Mifflin-St Jeor for BMR and apply appropriate activity multiplier.`;
+Calories in kcal, macros in grams. targetHealthyFats = recommended unsaturated fats. targetUnhealthyFats = maximum saturated + trans fats. Use Mifflin-St Jeor for BMR and apply appropriate activity multiplier.`;
 
 type AiSettingsWithKey = AiSettings & { apiKey: string };
 

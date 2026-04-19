@@ -1,32 +1,37 @@
 'use client';
 
-interface MetricCardProps {
+interface NutrientBarProps {
   label: string;
   value: number;
   target: number;
   unit: string;
-  color: string;
+  baseColor: string;
+  isLimit?: boolean;
 }
 
-function MetricCard({ label, value, target, unit, color }: MetricCardProps) {
+function NutrientBar({ label, value, target, unit, baseColor, isLimit = false }: NutrientBarProps) {
+  const hasTarget = target > 0;
+  const pct = hasTarget ? Math.min(value / target, 1) : 0;
+  const isOver = hasTarget && value > target;
+  const barColor = isLimit && isOver ? 'var(--color-danger)' : baseColor;
+
   return (
-    <div
-      className="flex flex-col items-center gap-1 rounded-[var(--radius-md)] px-2 py-2"
-      style={{
-        background: `color-mix(in srgb, ${color} 7%, var(--color-surface))`,
-        border: `1px solid color-mix(in srgb, ${color} 20%, var(--color-border))`,
-      }}
-    >
-      <span className="text-[9px] font-semibold uppercase tracking-wider text-[var(--color-text-muted)]">
+    <div className="flex items-center gap-2">
+      <span className="w-[68px] shrink-0 text-[10px] font-semibold uppercase tracking-wide text-[var(--color-text-muted)]">
         {label}
       </span>
-      <span className="text-sm font-black leading-none" style={{ color }}>
-        {value}
+      <span className="shrink-0 rounded-[6px] border border-[var(--color-border)] bg-[var(--color-surface-2)] px-1.5 py-[3px] font-mono text-[10px] leading-none">
+        <span className="font-bold text-[var(--color-text)]">{Math.round(value)}</span>
+        <span className="text-[var(--color-text-dim)]">/</span>
+        <span className="text-[var(--color-text-muted)]">{hasTarget ? target : '—'}</span>
+        <span className="ml-0.5 text-[var(--color-text-dim)]">{unit}</span>
       </span>
-      <span className="text-sm font-semibold text-[var(--color-text-muted)]">
-        / {target > 0 ? target : '—'}
-      </span>
-      <span className="text-[9px] text-[var(--color-text-dim)]">{unit}</span>
+      <div className="relative flex-1 h-1.5 overflow-hidden rounded-full bg-[var(--color-border)]">
+        <div
+          className="absolute inset-y-0 left-0 rounded-full transition-all duration-500"
+          style={{ width: `${pct * 100}%`, background: barColor }}
+        />
+      </div>
     </div>
   );
 }
@@ -36,22 +41,29 @@ interface SummaryRingsProps {
   protein: number;
   fiber: number;
   carbs: number;
+  healthyFats: number;
+  unhealthyFats: number;
   targetCalories?: number;
   targetProtein?: number;
   targetFiber?: number;
   targetCarbs?: number;
+  targetHealthyFats?: number;
+  targetUnhealthyFats?: number;
 }
 
 export function SummaryRings({
-  calories, protein, fiber, carbs,
+  calories, protein, fiber, carbs, healthyFats, unhealthyFats,
   targetCalories = 0, targetProtein = 0, targetFiber = 0, targetCarbs = 0,
+  targetHealthyFats = 0, targetUnhealthyFats = 0,
 }: SummaryRingsProps) {
   return (
-    <div className="grid grid-cols-4 gap-2">
-      <MetricCard label="Calories" value={calories} target={targetCalories} unit="kcal" color="var(--color-calories)" />
-      <MetricCard label="Protein"  value={protein}  target={targetProtein}  unit="g"    color="var(--color-protein)" />
-      <MetricCard label="Fiber"    value={fiber}    target={targetFiber}    unit="g"    color="var(--color-fiber)" />
-      <MetricCard label="Carbs"    value={carbs}    target={targetCarbs}    unit="g"    color="var(--color-carbs)" />
+    <div className="flex flex-col gap-2.5">
+      <NutrientBar label="Calories"  value={calories}      target={targetCalories}      unit="kcal" baseColor="var(--color-calories)"       isLimit />
+      <NutrientBar label="Protein"   value={protein}       target={targetProtein}       unit="g"    baseColor="var(--color-success)" />
+      <NutrientBar label="Fiber"     value={fiber}         target={targetFiber}         unit="g"    baseColor="var(--color-success)" />
+      <NutrientBar label="Carbs"     value={carbs}         target={targetCarbs}         unit="g"    baseColor="var(--color-carbs)"           isLimit />
+      <NutrientBar label="H. Fats"   value={healthyFats}   target={targetHealthyFats}   unit="g"    baseColor="var(--color-success)" />
+      <NutrientBar label="U. Fats"   value={unhealthyFats} target={targetUnhealthyFats} unit="g"    baseColor="var(--color-unhealthy-fats)"  isLimit />
     </div>
   );
 }

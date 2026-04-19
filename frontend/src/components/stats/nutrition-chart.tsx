@@ -6,13 +6,15 @@ import {
 } from 'recharts';
 import type { DailyEntry } from '@/lib/api';
 
-type MetricKey = 'calories' | 'protein' | 'fiber' | 'carbs';
+type MetricKey = 'calories' | 'protein' | 'fiber' | 'carbs' | 'healthyFats' | 'unhealthyFats';
 
 const metricConfig: Record<MetricKey, { field: keyof DailyEntry; color: string; unit: string }> = {
-  calories: { field: 'totalCalories', color: 'var(--color-calories)', unit: 'kcal' },
-  protein:  { field: 'totalProtein',  color: 'var(--color-protein)',  unit: 'g' },
-  fiber:    { field: 'totalFiber',    color: 'var(--color-fiber)',    unit: 'g' },
-  carbs:    { field: 'totalCarbs',    color: 'var(--color-carbs)',    unit: 'g' },
+  calories:      { field: 'totalCalories',      color: 'var(--color-calories)',       unit: 'kcal' },
+  protein:       { field: 'totalProtein',        color: 'var(--color-success)',        unit: 'g' },
+  fiber:         { field: 'totalFiber',          color: 'var(--color-fiber)',          unit: 'g' },
+  carbs:         { field: 'totalCarbs',          color: 'var(--color-carbs)',          unit: 'g' },
+  healthyFats:   { field: 'totalHealthyFats',   color: 'var(--color-healthy-fats)',   unit: 'g' },
+  unhealthyFats: { field: 'totalUnhealthyFats', color: 'var(--color-unhealthy-fats)', unit: 'g' },
 };
 
 interface ChartDataPoint {
@@ -23,7 +25,7 @@ interface ChartDataPoint {
 
 interface NutritionChartProps {
   entries: DailyEntry[];
-  metric: MetricKey;
+  metric: string;
   target: number;
   from: string;
   to: string;
@@ -35,7 +37,7 @@ function shortDate(iso: string): string {
 }
 
 export function NutritionChart({ entries, metric, target, from, to }: NutritionChartProps) {
-  const cfg = metricConfig[metric];
+  const cfg = metricConfig[metric as MetricKey];
 
   // Build a full date range with zeros for missing days
   const data: ChartDataPoint[] = [];

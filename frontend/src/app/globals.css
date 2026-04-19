@@ -16,10 +16,12 @@
   --color-danger:       #ef4444;
   --color-success:      #10b981;
 
-  --color-calories: #f97316;
-  --color-protein:  #3b82f6;
-  --color-fiber:    #8b5cf6;
-  --color-carbs:    #f59e0b;
+  --color-calories:       #f97316;
+  --color-protein:        #3b82f6;
+  --color-fiber:          #8b5cf6;
+  --color-carbs:          #f59e0b;
+  --color-healthy-fats:   #10b981;
+  --color-unhealthy-fats: #f97316;
 
   --radius-sm: 8px;
   --radius-md: 12px;

@@ -53,9 +53,11 @@ function FoodCard({ item }: { item: FoodItem }) {
             className="overflow-hidden"
           >
             <div className="border-t border-[var(--color-border)] px-4 py-3 space-y-1">
-              <MacroRow label="Protein" value={item.protein} unit="g" color="var(--color-protein)" />
-              <MacroRow label="Fiber"   value={item.fiber}   unit="g" color="var(--color-fiber)" />
-              <MacroRow label="Carbs"   value={item.carbs}   unit="g" color="var(--color-carbs)" />
+              <MacroRow label="Protein"       value={item.protein}       unit="g" color="var(--color-protein)" />
+              <MacroRow label="Fiber"         value={item.fiber}         unit="g" color="var(--color-fiber)" />
+              <MacroRow label="Carbs"         value={item.carbs}         unit="g" color="var(--color-carbs)" />
+              <MacroRow label="Healthy Fats"  value={item.healthyFats ?? 0}   unit="g" color="var(--color-healthy-fats)" />
+              <MacroRow label="Unhlthy Fats"  value={item.unhealthyFats ?? 0} unit="g" color="var(--color-unhealthy-fats)" />
             </div>
           </motion.div>
         )}

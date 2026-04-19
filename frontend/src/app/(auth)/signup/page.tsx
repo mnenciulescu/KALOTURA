@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { signUp, confirmSignUp, resendSignUpCode } from 'aws-amplify/auth';
+import { signUp, confirmSignUp, resendSignUpCode, signIn } from 'aws-amplify/auth';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 
@@ -41,9 +41,11 @@ export default function SignUpPage() {
     setLoading(true);
     try {
       await confirmSignUp({ username: email.trim().toLowerCase(), confirmationCode: code.trim() });
-      router.replace('/signin');
+      await signIn({ username: email.trim().toLowerCase(), password });
+      router.replace('/');
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Verification failed');
+      router.replace('/signin');
     } finally {
       setLoading(false);
     }

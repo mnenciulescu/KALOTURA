@@ -6,33 +6,39 @@ import { useQuery } from '@tanstack/react-query';
 import { NutritionChart } from '@/components/stats/nutrition-chart';
 import { Card } from '@/components/ui/card';
 import { Spinner } from '@/components/ui/spinner';
-import { getEntries } from '@/lib/api';
+import { getEntries, type UserProfile, type DailyEntry } from '@/lib/api';
 import { useAppStore } from '@/lib/store';
 import { addDays, subDays, getRangeLabel, isToday } from '@/lib/utils';
 import { cn } from '@/lib/utils';
 
-type Metric = 'calories' | 'protein' | 'fiber' | 'carbs';
+type Metric = 'calories' | 'protein' | 'fiber' | 'carbs' | 'healthyFats' | 'unhealthyFats';
 type Range = 7 | 30;
 
 const METRICS: Array<{ key: Metric; label: string }> = [
-  { key: 'calories', label: 'Calories' },
-  { key: 'protein',  label: 'Protein' },
-  { key: 'fiber',    label: 'Fiber' },
-  { key: 'carbs',    label: 'Carbs' },
+  { key: 'calories',      label: 'Calories' },
+  { key: 'protein',       label: 'Protein' },
+  { key: 'fiber',         label: 'Fiber' },
+  { key: 'carbs',         label: 'Carbs' },
+  { key: 'healthyFats',   label: 'H. Fats' },
+  { key: 'unhealthyFats', label: 'U. Fats' },
 ];
 
-const metricTargetKey: Record<Metric, 'targetCalories' | 'targetProtein' | 'targetFiber' | 'targetCarbs'> = {
-  calories: 'targetCalories',
-  protein:  'targetProtein',
-  fiber:    'targetFiber',
-  carbs:    'targetCarbs',
+const metricTargetKey: Record<Metric, keyof UserProfile> = {
+  calories:      'targetCalories',
+  protein:       'targetProtein',
+  fiber:         'targetFiber',
+  carbs:         'targetCarbs',
+  healthyFats:   'targetHealthyFats',
+  unhealthyFats: 'targetUnhealthyFats',
 };
 
-const metricValueKey: Record<Metric, 'totalCalories' | 'totalProtein' | 'totalFiber' | 'totalCarbs'> = {
-  calories: 'totalCalories',
-  protein:  'totalProtein',
-  fiber:    'totalFiber',
-  carbs:    'totalCarbs',
+const metricValueKey: Record<Metric, keyof DailyEntry> = {
+  calories:      'totalCalories',
+  protein:       'totalProtein',
+  fiber:         'totalFiber',
+  carbs:         'totalCarbs',
+  healthyFats:   'totalHealthyFats',
+  unhealthyFats: 'totalUnhealthyFats',
 };
 
 export default function StatsPage() {
@@ -83,13 +89,13 @@ export default function StatsPage() {
 
       <div className="flex flex-col gap-4 px-4 py-4">
         {/* Metric tabs */}
-        <div className="flex gap-1 rounded-[var(--radius-md)] bg-[var(--color-surface-2)] p-1">
+        <div className="flex gap-1 overflow-x-auto no-scrollbar rounded-[var(--radius-md)] bg-[var(--color-surface-2)] p-1">
           {METRICS.map(({ key, label }) => (
             <button
               key={key}
               onClick={() => setMetric(key)}
               className={cn(
-                'flex-1 py-2 text-xs font-semibold rounded-[var(--radius-sm)] transition-colors duration-150',
+                'shrink-0 px-3 py-2 text-xs font-semibold rounded-[var(--radius-sm)] transition-colors duration-150',
                 metric === key
                   ? 'bg-[var(--color-bg)] text-[var(--color-text)] shadow-sm'
                   : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]',

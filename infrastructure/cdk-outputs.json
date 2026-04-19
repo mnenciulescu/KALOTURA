@@ -1,0 +1,10 @@
+{
+  "KaloturaStack": {
+    "UserPoolClientId": "fu8p1scg48jiq9ikkpgrfdvnv",
+    "TableName": "kalotura-data",
+    "UserPoolId": "eu-central-1_JIljAzAam",
+    "ApiUrl": "https://pxohcxwz2a.execute-api.eu-central-1.amazonaws.com/",
+    "Region": "eu-central-1",
+    "FrontendUrl": "https://d3hwyhjmv862g8.cloudfront.net"
+  }
+}

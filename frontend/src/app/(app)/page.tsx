@@ -119,10 +119,14 @@ export default function DailyLogPage() {
               protein={entry?.totalProtein ?? 0}
               fiber={entry?.totalFiber ?? 0}
               carbs={entry?.totalCarbs ?? 0}
+              healthyFats={entry?.totalHealthyFats ?? 0}
+              unhealthyFats={entry?.totalUnhealthyFats ?? 0}
               targetCalories={profile?.activeCalories}
               targetProtein={profile?.targetProtein}
               targetFiber={profile?.targetFiber}
               targetCarbs={profile?.targetCarbs}
+              targetHealthyFats={profile?.targetHealthyFats}
+              targetUnhealthyFats={profile?.targetUnhealthyFats}
             />
           )}
 

@@ -12,6 +12,8 @@ export interface UserProfile {
   targetProtein?: number;
   targetFiber?: number;
   targetCarbs?: number;
+  targetHealthyFats?: number;
+  targetUnhealthyFats?: number;
   passiveCalories?: number;
   activeCalories?: number;
   createdAt: string;
@@ -35,6 +37,8 @@ export interface FoodItem {
   protein: number;
   fiber: number;
   carbs: number;
+  healthyFats: number;
+  unhealthyFats: number;
 }
 
 export interface DailyEntry {
@@ -45,6 +49,8 @@ export interface DailyEntry {
   totalProtein: number;
   totalFiber: number;
   totalCarbs: number;
+  totalHealthyFats: number;
+  totalUnhealthyFats: number;
   items: FoodItem[];
   calculatedAt: string;
   updatedAt: string;
@@ -55,6 +61,8 @@ export interface DailyTargets {
   targetProtein: number;
   targetFiber: number;
   targetCarbs: number;
+  targetHealthyFats: number;
+  targetUnhealthyFats: number;
   passiveCalories: number;
   activeCalories: number;
 }
@@ -66,5 +74,7 @@ export interface AiNutritionResponse {
     protein: number;
     fiber: number;
     carbs: number;
+    healthyFats: number;
+    unhealthyFats: number;
   };
 }

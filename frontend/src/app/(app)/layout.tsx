@@ -63,7 +63,8 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
     );
   }
 
-  if (!profile) return spinner;
+  // No profile yet — wait for the effect to redirect to /onboarding
+  if (profileError || !profile) return spinner;
 
   return (
     <MobileShell>

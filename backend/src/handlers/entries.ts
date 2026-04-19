@@ -56,6 +56,8 @@ export async function handlePostEntry(
     totalProtein: nutrition.totals.protein,
     totalFiber: nutrition.totals.fiber,
     totalCarbs: nutrition.totals.carbs,
+    totalHealthyFats: nutrition.totals.healthyFats,
+    totalUnhealthyFats: nutrition.totals.unhealthyFats,
     items: nutrition.items,
     calculatedAt: now,
     updatedAt: now,

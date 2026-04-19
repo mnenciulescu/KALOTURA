@@ -42,6 +42,8 @@ export async function handlePutProfile(userId: string, body: Partial<UserProfile
     targetProtein: existing?.targetProtein,
     targetFiber: existing?.targetFiber,
     targetCarbs: existing?.targetCarbs,
+    targetHealthyFats: existing?.targetHealthyFats,
+    targetUnhealthyFats: existing?.targetUnhealthyFats,
     passiveCalories: existing?.passiveCalories,
     activeCalories: existing?.activeCalories,
     createdAt: existing?.createdAt ?? now,
