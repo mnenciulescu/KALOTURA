@@ -30,6 +30,24 @@ export default function DailyLogPage() {
   const [text, setText] = useState('');
   const [status, setStatus] = useState<string | null>(null);
   const statusTimersRef = useRef<ReturnType<typeof setTimeout>[]>([]);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  function handleTextareaClick() {
+    const ta = textareaRef.current;
+    if (!ta) return;
+    // Append ", " if text has content and doesn't already end with it
+    let next = text;
+    if (next.trim() && !next.endsWith(', ')) {
+      next = next.trimEnd() + ', ';
+      setText(next);
+    }
+    // Move cursor to end after React flushes the update
+    const targetPos = next.length;
+    setTimeout(() => {
+      ta.setSelectionRange(targetPos, targetPos);
+      ta.focus();
+    }, 0);
+  }
 
   const { data: fetchedEntry, isLoading } = useQuery({
     queryKey: ['entry', selectedDate],
@@ -133,17 +151,23 @@ export default function DailyLogPage() {
         </Card>
 
         {/* ─── Food entry ──────────────────────────────────────────────────── */}
-        <div className="flex flex-col gap-3">
-          <span className="text-xs font-semibold uppercase tracking-wider text-[var(--color-text-muted)]">
+        <Card
+          className="border-[var(--color-primary)]/30"
+          style={{ background: 'color-mix(in srgb, var(--color-primary) 3%, var(--color-surface))' }}
+        >
+          <div className="flex flex-col gap-3">
+          <span className="text-sm font-bold text-[var(--color-text)]">
             {isToday(selectedDate) ? 'What did you eat today?' : formatDate(selectedDate)}
           </span>
 
           <textarea
+            ref={textareaRef}
             value={text}
             onChange={(e) => setText(e.target.value)}
+            onClick={handleTextareaClick}
             placeholder="e.g. 2 scrambled eggs, oatmeal with milk, black coffee, an apple…"
-            rows={4}
-            className="w-full resize-none rounded-[var(--radius-md)] bg-[var(--color-surface-2)] border border-[var(--color-border)] px-4 py-3 text-sm text-[var(--color-text)] placeholder:text-[var(--color-text-dim)] focus:outline-none focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)]/30 transition-colors duration-150"
+            rows={5}
+            className="w-full resize-none rounded-[var(--radius-md)] bg-[var(--color-surface-2)] border border-[var(--color-border)] px-4 py-3 text-base text-[var(--color-text)] placeholder:text-[var(--color-text-dim)] focus:outline-none focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)]/30 transition-colors duration-150"
           />
 
           {/* Status banner */}
@@ -172,7 +196,8 @@ export default function DailyLogPage() {
           >
             Update
           </Button>
-        </div>
+          </div>
+        </Card>
 
         {/* ─── Breakdown ───────────────────────────────────────────────────── */}
         {entry && (
